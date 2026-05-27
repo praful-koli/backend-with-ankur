@@ -75,4 +75,57 @@ app.get('/api/notes' , async (req ,res)  => {
     } 
 })
 
+
+/**
+ * @routes PATCH /api/notes/:id
+ * @description Update a note by id require description in the req body
+ * @access Public
+ */
+
+app.patch('/api/notes/:id' , async (req , res) => {
+    try {
+        const {id} = req.params;
+        const {description} = req.body;
+
+        // validation
+
+        if (!description) {
+            return res.status(400).json({
+                error : 'description require'
+            })
+        }
+
+        if (description.trim().length() < 10) {
+            return res.status(400).json({
+                error : 'Description must be at less than 10 characters long'
+            })
+        }
+
+        //validation pass patch the notes
+
+        let note = await noteModel.findById(id)
+
+        if(!note){
+            return res.status(404).json({
+                error : "Note not found"
+            })
+        }
+
+        note.description = description;
+        note.save()
+       
+        res.status(200).json({
+            success : true,
+            message : 'Note update successfuly',
+            note : note
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            error : 'Internal server error'
+        })
+    }    
+})
+
+
 export default app

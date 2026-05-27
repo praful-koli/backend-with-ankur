@@ -50,4 +50,29 @@ app.post('/api/notes' , async (req, res) => {
     }
 })
 
+
+/**
+ *  @route GET /api/notes
+ *  @description Get all notes
+ *  @access Public
+ */
+
+app.get('/api/notes' , async (req ,res)  => {
+   try {
+        
+        const notes = await noteModel.find();
+        
+        res.status(200).json({
+            success : true,
+            message : 'Get All Notes fetched successfully',
+            note : notes
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            error : 'Internal server error'
+        })
+    } 
+})
+
 export default app

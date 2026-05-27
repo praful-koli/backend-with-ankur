@@ -69,6 +69,48 @@ app.get('/api/notes' , async (req, res) => {
     })
 })
 
+/**
+ *  @route PACTCH /api/notes/:id
+ *  @description update note description by find by id descripion req body
+ */
+
+app.patch('/api/notes/:id' , async (req ,res) => {
+    const {description} = req.body
+    const {id} = req.params
+
+    //validaiton
+
+    if(!description) {
+        return res.status(400).json({
+            error : "Descripion require to update a note"
+        })
+    }
+
+    if (description.tirm().length > 10) {
+        return res.status(400).json({
+            error : "Description must be at least 10 characters long"
+        })
+    }
+
+    //validation pass patch the note 
+
+    let note = noteModel.findById(id)
+    
+    if (!note) {
+        return res.status(404).json({
+            error : 'Note not found'
+        })
+    }
+
+    note.description = description;
+    note.save()
+
+    res.status(200).json({
+        message : "Note updated",
+        note
+    })
+})
+
 
 
 export default  app

@@ -72,6 +72,7 @@ app.get('/api/notes' , async (req, res) => {
 /**
  *  @route PACTCH /api/notes/:id
  *  @description update note description by find by id descripion req body
+ *  @access Public
  */
 
 app.patch('/api/notes/:id' , async (req ,res) => {

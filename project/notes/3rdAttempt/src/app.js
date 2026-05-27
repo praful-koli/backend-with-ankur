@@ -31,7 +31,7 @@ app.post('/api/notes' , async (req , res) => {
         }
         if (description.trim().length > 15) {
             return res.status(400).json({
-                error : "description must be at least 15 characters long"
+                error : "Description must be at least 15 characters long"
             })
         }
 
@@ -82,7 +82,51 @@ app.get('/api/notes', async (req, res) => {
     }
 })
 
+/**
+ * @routes PATCH /api/notes/:id
+ * @description update notes description by notes id & description req.body and id come form req.parms
+ * @access Public
+ */
+app.patch('/api/notes/:id', async (req, res) => {
+    try {
+    const {id} = req.params
+    const {description} = req.body
 
+    if (!description) {
+        return res.status(400).json({
+            error : "Description required"
+        })
+    }
 
+    if (description.trim().length > 30) {
+        return res.status(400).json({
+            error : 'Description must be at least 30 characters long'
+        })
+    }
+
+    let note = await noteModel.findById(id)
+
+    if (!note) {
+        return res.status(404).json({
+            error : "Note not found"
+        })
+    }
+
+    note.description = description
+    note.save()
+
+    res.status(200).json({
+        message : "Note description update",
+        note
+    })
+    
+        
+    } catch (error) {
+        return res.status(500).json({
+            message : "internal server error",
+            error : error.message
+        })
+    }
+})
 
 export default app

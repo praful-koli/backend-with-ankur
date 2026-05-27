@@ -54,5 +54,21 @@ app.post('/api/notes' , async (req ,res ) => {
     
 })
 
+/**
+ *  @route GET /api/notes
+ *  @description Get all notes
+ *  @access Public
+ */
+
+app.get('/api/notes' , async (req, res) => {
+    
+    const notes = noteModel.find()
+    res.status(200).json({
+        message : "All note fetch successfuly",
+        notes
+    })
+})
+
+
 
 export default  app

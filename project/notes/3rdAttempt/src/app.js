@@ -156,4 +156,27 @@ app.delete('/api/notes/:id', async (req, res) => {
     }
 })
 
+/**
+ * @routes DELETE /api/notes
+ * @description delete all notes
+ * @access Public
+ */
+
+app.delete('/api/notes' , async (req, res) => {
+      try {
+       
+        await noteModel.deleteMany()
+
+        res.status(200).json({
+            message : "All notes delete successfuly"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            message : "internal server error",
+            error : error.message
+        })
+    }
+})
+
 export default app

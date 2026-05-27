@@ -87,6 +87,7 @@ app.get('/api/notes', async (req, res) => {
  * @description update notes description by notes id & description req.body and id come form req.parms
  * @access Public
  */
+
 app.patch('/api/notes/:id', async (req, res) => {
     try {
     const {id} = req.params
@@ -121,6 +122,32 @@ app.patch('/api/notes/:id', async (req, res) => {
     })
     
         
+    } catch (error) {
+        return res.status(500).json({
+            message : "internal server error",
+            error : error.message
+        })
+    }
+})
+
+
+/**
+ *  @routes DELETE /api/notes/:id
+ *  @description delete single notes by id 
+ *  @access Public
+ */
+
+app.delete('/api/notes/:id', async (req, res) => {
+      try {
+       
+        const {id} = req.params
+
+        await noteModel.findByIdAndDelete(id)
+
+        res.status(200).json({
+            message : 'Note delete sucessfuly'
+        })
+    
     } catch (error) {
         return res.status(500).json({
             message : "internal server error",

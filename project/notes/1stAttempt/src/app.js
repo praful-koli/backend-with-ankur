@@ -14,7 +14,7 @@ app.use(express.json())
  */
 
 app.post('/api/notes' , async (req, res) => {
-    try {
+    
         const {title , description} = req.body
 
         // Validation
@@ -43,11 +43,6 @@ app.post('/api/notes' , async (req, res) => {
             note : newNote
         })
         
-    } catch (error) {
-        return res.status(500).json({
-            error : 'Internal server error'
-        })
-    }
 })
 
 
@@ -58,7 +53,6 @@ app.post('/api/notes' , async (req, res) => {
  */
 
 app.get('/api/notes' , async (req ,res)  => {
-   try {
         
         const notes = await noteModel.find();
         
@@ -68,11 +62,6 @@ app.get('/api/notes' , async (req ,res)  => {
             note : notes
         })
         
-    } catch (error) {
-        return res.status(500).json({
-            error : 'Internal server error'
-        })
-    } 
 })
 
 
@@ -83,7 +72,7 @@ app.get('/api/notes' , async (req ,res)  => {
  */
 
 app.patch('/api/notes/:id' , async (req , res) => {
-    try {
+   
         const {id} = req.params;
         const {description} = req.body;
 
@@ -95,7 +84,7 @@ app.patch('/api/notes/:id' , async (req , res) => {
             })
         }
 
-        if (description.trim().length() < 10) {
+        if (description.trim().length < 10) {
             return res.status(400).json({
                 error : 'Description must be at less than 10 characters long'
             })
@@ -119,12 +108,7 @@ app.patch('/api/notes/:id' , async (req , res) => {
             message : 'Note update successfuly',
             note : note
         })
-        
-    } catch (error) {
-        return res.status(500).json({
-            error : 'Internal server error'
-        })
-    }    
+    
 })
 
 
